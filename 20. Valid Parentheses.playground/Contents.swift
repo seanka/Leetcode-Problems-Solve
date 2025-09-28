@@ -1,17 +1,30 @@
 class Solution {
     func isValid(_ s: String) -> Bool {
-        var inputString = s
+        var parentheses: [Character] = []
         
-        while true {
-            if s.contains("()") {inputString.replace("()", with: "")}
-            else if s.contains("{}") {inputString.replace("{}", with: "")}
-            else if s.contains("[]") {inputString.replace("[]", with: "")}
-            else { return inputString.isEmpty }
+        for char in s {
+            if char == "(" || char == "[" || char == "{" {
+                parentheses.append(char)
+                continue
+            }
+            
+            guard !parentheses.isEmpty else { return false }
+            
+            if char == ")", parentheses.last == "(" {
+                parentheses.popLast()
+            } else if char == "]", parentheses.last == "[" {
+                parentheses.popLast()
+            } else if char == "}", parentheses.last == "{" {
+                parentheses.popLast()
+            } else {
+                return false
+            }
         }
-
+        
+        return parentheses.isEmpty
     }
 }
 
-let input = "{[]}"
+let input = "([])"
 let sol = Solution()
 print(sol.isValid(input))
